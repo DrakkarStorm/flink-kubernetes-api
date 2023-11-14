@@ -1,0 +1,32 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: view-flink
+rules:
+  - apiGroups:
+      - flink.apache.org
+    resources:
+      - flinkdeployments
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: default-view-flink
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view-flink
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: flink-operator
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flink
+  namespace: flink-operator
