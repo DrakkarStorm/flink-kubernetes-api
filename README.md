@@ -12,7 +12,8 @@ client-go uses the [Service Account token][sa] mounted inside the Pod at the
 First compile the application for Linux:
 
     cd in-cluster-client-configuration
-    GOOS=linux go build -o ./app .
+    docker build -t harbor.knada.rancher.kosmos.fr/public/kubernetes-api .
+    docker push harbor.knada.rancher.kosmos.fr/public/kubernetes-api
 
 Then package it to a docker image using the provided Dockerfile to run it on
 Kubernetes.
@@ -32,12 +33,12 @@ snippet to create role binding which will grant the default service account view
 permissions.
 
 ```
-kubectl create clusterrolebinding default-view --clusterrole=view --serviceaccount=default:default
+kubectl -n flink-operator apply -f rbac.yaml 
 ```
 
 Then, run the image in a Pod with a single instance Deployment:
 
-    kubectl run --rm -i demo --image=in-cluster
+    kubectl run --rm -i demo --namespace=flink-operator --image=harbor.knada.rancher.kosmos.fr/public/kubernetes-api
 
     There are 4 pods in the cluster
     There are 4 pods in the cluster
