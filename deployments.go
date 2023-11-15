@@ -45,7 +45,7 @@ func ListFlinkDeployment() ([]FlinkDeployment, error) {
 			return nil, err
 		}
 
-		status, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "reconciliationStatus", "state")
+		status, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "lifecycleState")
 		if err != nil {
 			log.Println(err)
 			return nil, err
