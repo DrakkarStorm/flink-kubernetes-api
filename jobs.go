@@ -37,7 +37,7 @@ func ListFlinkJobs() ([]FlinkSessionJob, error) {
 		return nil, err
 	}
 
-	var jobs []FlinkSessionJob
+	jobs := []FlinkSessionJob{}
 	for _, item := range list.Items {
 		name, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "name")
 		if err != nil {

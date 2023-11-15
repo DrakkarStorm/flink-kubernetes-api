@@ -37,7 +37,7 @@ func ListFlinkDeployment() ([]FlinkDeployment, error) {
 		return nil, err
 	}
 
-	var deployments []FlinkDeployment
+	deployments := []FlinkDeployment{}
 	for _, item := range list.Items {
 		name, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "name")
 		if err != nil {
