@@ -45,19 +45,19 @@ func ListFlinkJobs() ([]FlinkSessionJob, error) {
 			return nil, err
 		}
 
-		status, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "status", "jobStatus", "state")
+		status, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "jobStatus", "state")
 		if err != nil {
 			log.Println(err)
 			return nil, err
 		}
 
-		jobId, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "status", "jobStatus", "jobId")
+		jobId, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "jobStatus", "jobId")
 		if err != nil {
 			log.Println(err)
 			return nil, err
 		}
 
-		startTime, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "status", "jobStatus", "startTime")
+		startTime, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "jobStatus", "startTime")
 		if err != nil {
 			log.Println(err)
 			return nil, err

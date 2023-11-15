@@ -45,19 +45,19 @@ func ListFlinkDeployment() ([]FlinkDeployment, error) {
 			return nil, err
 		}
 
-		status, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "state")
+		status, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "reconciliationStatus", "state")
 		if err != nil {
 			log.Println(err)
 			return nil, err
 		}
 
-		cpu, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "clusterInfo", "total-cpu")
+		cpu, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "clusterInfo", "total-cpu")
 		if err != nil {
 			log.Println(err)
 			return nil, err
 		}
 
-		memory, _, err := unstructured.NestedString(item.UnstructuredContent(), "metadata", "clusterInfo", "total-memory")
+		memory, _, err := unstructured.NestedString(item.UnstructuredContent(), "status", "clusterInfo", "total-memory")
 		if err != nil {
 			log.Println(err)
 			return nil, err
