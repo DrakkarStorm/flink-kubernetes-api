@@ -1,6 +1,9 @@
 # Build the manager binary
 FROM golang:1.21 as builder
-WORKDIR /workspace
+
+# Définis le répertoire de travail
+WORKDIR /app
+
 # Copy the Go Modules manifests
 COPY go.mod go.mod
 COPY go.sum go.sum
@@ -12,19 +15,22 @@ RUN go mod download
 # Copy the go source
 COPY . .
 
-# Build
-RUN go build -a -o kubernetes-api .
+# Construis l'application
+RUN CGO_ENABLED=0 GOOS=linux go build -o flink-kubernetes-api
 
+# Utilise une image légère d'Alpine pour exécuter l'application
+FROM debian:latest
 
-# Use distroless as minimal base image to package the manager binary
-# Refer to https://github.com/GoogleContainerTools/distroless for more details
-#FROM gcr.io/distroless/static:nonroot
-FROM ubuntu:latest
-WORKDIR /
+RUN apt-get update && apt-get install -y curl
 
-COPY --from=builder /workspace/kubernetes-api .
+# Définis le répertoire de travail
+WORKDIR /app
 
-RUN apt update && apt install -y curl
+# Copie l'exécutable construit à partir de l'étape précédente
+COPY --from=builder /app/flink-kubernetes-api .
 
-EXPOSE 9000
-ENTRYPOINT ["/kubernetes-api"]
+# Expose le port sur lequel l'application écoute
+EXPOSE 8080
+
+# Exécute l'application
+CMD ["./flink-kubernetes-api"]
