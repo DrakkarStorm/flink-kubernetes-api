@@ -70,6 +70,8 @@ func ListFlinkJobs() ([]FlinkSessionJob, error) {
 }
 
 func UpdateFlinkSessionJob(resourceName, statusValue string) {
+	log.Println(resourceName)
+	log.Println(statusValue)
 	ctx := context.Background()
 	config := ctrl.GetConfigOrDie()
 	dynamic := dynamic.NewForConfigOrDie(config)
@@ -91,7 +93,7 @@ func UpdateFlinkSessionJob(resourceName, statusValue string) {
 	resource.Object["spec"].(map[string]interface{})["job"].(map[string]interface{})["state"] = statusValue
 
 	// Update the resource
-	_, err = dynamic.Resource(resourceId).Namespace("flink-operator").UpdateStatus(ctx, resource, metav1.UpdateOptions{})
+	_, err = dynamic.Resource(resourceId).Namespace("flink-operator").Update(ctx, resource, metav1.UpdateOptions{})
 	if err != nil {
 		log.Printf("Error updating resource status: %v\n", err)
 		return

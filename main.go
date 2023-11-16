@@ -53,7 +53,8 @@ func main() {
 	app.Patch("/api/jobs/:name", func(c *fiber.Ctx) error {
 		log.Println("Received a PATCH request")
 		jobName := c.Params("name")
-
+		log.Printf("jobName: %s\n", jobName)
+		log.Println(string(c.Body()))
 		// Create an instance of the User struct to store the parsed JSON
 		status := new(Status)
 
@@ -63,7 +64,6 @@ func main() {
 		}
 
 		log.Printf("Received user: %+v\n", status)
-		log.Printf("jobName: %s\n", jobName)
 
 		UpdateFlinkSessionJob(jobName, status.State)
 
