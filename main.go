@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -28,7 +26,6 @@ func main() {
 
 	// Définir une route pour le chemin "/api/hello"
 	app.Get("/api/jobs", func(c *fiber.Ctx) error {
-		log.Println("Received a GET request")
 		jobs, err := ListFlinkJobs()
 		if err != nil {
 			// Renvoyer le message au format JSON
