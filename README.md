@@ -1,42 +1,31 @@
-# Authenticating inside the cluster
+# flink-kubernetes-api
 
-This example shows you how to configure a client with client-go to authenticate
-to the Kubernetes API from an application running inside the Kubernetes cluster.
+This project is to add action on kubernetes for the interface [flink-kubernetes-dashboard](https://github.com/EnzoDechaene/flink-kubernetes-dashboard)
 
-client-go uses the [Service Account token][sa] mounted inside the Pod at the
-`/var/run/secrets/kubernetes.io/serviceaccount` path when the
-`rest.InClusterConfig()` is used.
+To have access to manage Flink Operator Object on Kubernetes you will need to apply the rbac.yaml on your kubernetes cluster.
 
-## Running this example
+## Getting Started
 
-First compile the application for Linux:
+First, run the development server:
 
-    cd flink-kubernetes-api
-    make build-and-push
+```bash
+go build .
 
-Then package it to a docker image using the provided Dockerfile to run it on
-Kubernetes.
-
-If you have RBAC enabled on your cluster, use the following
-snippet to create role binding which will grant the default service account view
-permissions.
-
-```
-kubectl -n flink-operator apply -f rbac.yaml 
+./kubernetes-api
 ```
 
-Then, run the image in a Pod with a single instance Deployment:
+You can try to acces by requeting http://localhost:8080/deployments
 
-    kubectl -n flink-operator apply -f deployment.yaml
+## Use on Kubernetes
 
-    ...
+If you want to embedded the api and the dashboard you'll need to build and push the docker image to your repository
 
-The example now runs on Kubernetes API and successfully queries the number of
-pods in the cluster every 10 seconds.
+```bash
+make build-and-push
+```
 
-### Clean up
+The next step is to add the rbac.yaml to have access to your Flink Operator Kubernetes Object.
 
-To stop this example and clean up the pod, press <kbd>Ctrl</kbd>+<kbd>C</kbd> on
-the `kubectl run` command and then run:
+## Next
 
-    kubectl -n flink-operator delete deployment flink-kubernetes-dashboard
+Use the Flink Kubernetes Dashboard install to use your api.
