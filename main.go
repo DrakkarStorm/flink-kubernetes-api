@@ -39,33 +39,20 @@ func main() {
 		return c.JSON(jobs)
 	})
 
-	app.Patch("/api/deployments/:name", func(c *fiber.Ctx) error {
-		deployments, err := ListFlinkDeployment()
-		if err != nil {
-			// Renvoyer le message au format JSON
-			return c.Status(500).SendString(err.Error())
-		}
-
-		// Renvoyer le message au format JSON
-		return c.JSON(deployments)
-	})
-
 	app.Patch("/api/jobs/:name", func(c *fiber.Ctx) error {
-		log.Println("Received a PATCH request")
 		jobName := c.Params("name")
-		log.Printf("jobName: %s\n", jobName)
-		log.Println(string(c.Body()))
+
 		// Create an instance of the User struct to store the parsed JSON
 		status := new(Status)
-
 		// Parse the JSON body into the User struct
 		if err := c.BodyParser(status); err != nil {
 			return err
 		}
 
-		log.Printf("Received user: %+v\n", status)
-
-		UpdateFlinkSessionJob(jobName, status.State)
+		if err := UpdateFlinkSessionJob(jobName, status.State); err != nil {
+			// Renvoyer le message au format JSON
+			return c.Status(500).SendString(err.Error())
+		}
 
 		// Renvoyer le message au format JSON
 		return c.Status(201).Send(nil)
