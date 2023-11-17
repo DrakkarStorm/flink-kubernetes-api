@@ -19,9 +19,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o flink-kubernetes-api
 
 # Utilise une image légère d'Alpine pour exécuter l'application
-FROM debian:latest
-
-RUN apt-get update && apt-get install -y curl
+FROM alpine:latest
 
 # Définis le répertoire de travail
 WORKDIR /app
